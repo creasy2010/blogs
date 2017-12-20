@@ -77,10 +77,7 @@ node --harmony ./packages/x-site-web-openapi/settings/webpack.openapi.config.js
 那么根本 原因呢 ?  是官方文档写错了, 是我理解错了. 还是项目配置错了. 
 
 
-一步一步跟踪,查看awesome-typescript-loader后发现这里引入babel-core 是通过require 而且参数是全路径; 
-这样问题就解决了 
-如果是使用require('babel-core') 那么会依照规则一层一层向上查找, 而现在是require('/Users/dong/workbench/x-site/packages/x-site-web-openapi/node_modules/babel-core') 当然找不到了. 
-
+一步一步跟踪,查看awesome-typescript-loader/src/instance.ts后发现这里引入babel-core 是通过require; 
 ```typescript
 
 function setupBabel(loaderConfig: LoaderConfig, context: string): any {
@@ -100,6 +97,10 @@ function setupBabel(loaderConfig: LoaderConfig, context: string): any {
 }
 
 ```
+
+这样问题就解决了
+如果是使用require('babel-core') 那么会依照规则一层一层向上查找, 
+而现在是require('/Users/dong/workbench/x-site/packages/x-site-web-openapi/node_modules/babel-core') 当然找不到了. 
 
 #### 解决方案; 
 看代码应该能通过loaderConfig配置来实现,再次查看<a href="https://github.com/s-panferov/awesome-typescript-loader#usebabel-boolean-defaultfalse">awesome-typescript-loader文档</a> , 有babel相关参数可以配置参数: 
