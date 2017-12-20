@@ -1,6 +1,6 @@
 ## require路径寻址失效了吗? 
 
-在使用lerna+bootstrap管理项目时,require总是找不到module? 有点颠覆我的认知,最后终于明朗起来,记录下来;
+在使用lerna+bootstrap管理项目时,require总是找不到module? 有点颠覆我的认知,经过一翻追查,终于找到原因,记录下来;
 
 
 ### 背景介绍
@@ -102,3 +102,32 @@ function setupBabel(loaderConfig: LoaderConfig, context: string): any {
 ```
 
 #### 解决方案; 
+看代码应该能通过loaderConfig配置来实现,再次查看<a href="https://github.com/s-panferov/awesome-typescript-loader#usebabel-boolean-defaultfalse">awesome-typescript-loader文档</a> , 有babel相关参数可以配置参数: 
+
+
+```html
+useBabel (boolean) (default=false)
+Invoke Babel to transpile files. Useful with ES6 target. Please see useCache option which can improve warm-up time.
+
+If you're using babelOptions, anything in .babelrc will take precedence. This breaks expected usage for scenarios where you need two sets of Babel configs (example: one for Webpack, one for your build tools).
+
+You may want to "babelrc": false to disable.babelrc` if you don't want it:
+
+{
+    "useBabel": true,
+    "babelOptions": {
+        "babelrc": false, /* Important line */
+        "presets": [
+            ["env", { "targets": "last 2 versions, ie 11", "modules": false }]
+        ]
+    },
+    "babelCore": "@babel/core", // needed for Babel v7
+}
+babelCore (string) (default=undefined)
+Override the path used to find babel-core. Useful if node_modules is installed in a non-standard place or webpack is being invoked from a directory not at the root of the project.
+
+For Babel 7, this should be set to "@babel/core".
+```
+
+
+参考文档: 
