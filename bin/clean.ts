@@ -11,9 +11,9 @@ import fs, { Stats } from "fs";
 import fse from  'fs-extra';
 import {join} from 'path';
 
-let workBasePath = join(__dirname,'../..');
+let workBasePath = '/Users/dong/workbench/qmfe/creasy2010.github.io';
 
-const ignoreLists:string[] = ['manager','.gitignore','.git','.idea'].map(item=>join(workBasePath,item));
+const ignoreLists:string[] = ['.gitignore','.git','.idea'].map(item=>join(workBasePath,item));
 
 (async ()=>{
 
