@@ -63,7 +63,6 @@ sentry 的基本职责,当出现问题时,把错误现场信息,一些调试必�
 
 ![issue影响用户列表](issue影响用户列表.png)
 
-
 #### 如何与 github 完美结合
 
 sentry 与 github 的结合与可谓深入浅出,浅在简单易用,深在巧妙利用 issue commit coder 的关联;
@@ -103,6 +102,7 @@ sentry 与 github 的结合与可谓深入浅出,浅在简单易用,深在巧妙
 sentry 目前最新版本 9.0 算得上老牌厂商了, 我们能用得上的语言他基本都可以支持;小程序的采集与有社区贡献代码;
 
 eg :javascript
+
 ```javascript
 <script src="https://web-img.qmimg.com/qmfe/lib/ravenjs/raven-3.26.2.min.js"></script>
 <script>
@@ -112,16 +112,15 @@ eg :javascript
 ```
 
 eg:(reactNative)[https://docs.sentry.io/clients/javascript/integrations/react/]
+
 ```javascript
 //index.ios.js
-import { Sentry } from 'react-native-sentry';
+import { Sentry } from "react-native-sentry";
 
-Sentry.config(
-  'https://8070a174f3ab4fe298d4c5516b3e2704@sentry.qianmi.com/7'
-).install();
+Sentry.config("https://8070a174f3ab4fe298d4c5516b3e2704@sentry.qianmi.com/7").install();
 // set the user context
 Sentry.setUserContext({
-  email: '',
+  email: "",
   userID: Config.ADMINID,
   username: Config.DEVICE.model,
   extra: {
@@ -130,22 +129,20 @@ Sentry.setUserContext({
 });
 
 Sentry.setTagsContext({
-  environment: 'production',
+  environment: "production",
   react: true
 });
 
 Sentry.setEventSentSuccessfully(event => {
-  console.log('发送错误', event);
+  console.log("发送错误", event);
 });
-
 ```
 
-
 ##### 备注
+
 [node java python ...接入](https://docs.sentry.io/platforms/?platform=javascript)
 
 [小程序接入](https://github.com/youzan/raven-weapp):
-
 
 #### [openapi](https://docs.sentry.io/api/)
 
@@ -172,28 +169,27 @@ sentry 为我们提供了灵活的报警策略,实现这个目标:
 
 #### 服务端日志处理
 
-服务端错误日志采集最好与官方提供的sdk进行结合,但目前已运行项目已经接入logserver,通过kafka进行消息传递,那么我们怎么办呢?;
-通过监听kafka的日志消息将错误日志上报到sentry;
+服务端错误日志采集最好与官方提供的 sdk 进行结合,但目前已运行项目已经接入 logserver,通过 kafka 进行消息传递,那么我们怎么办呢?;
+通过监听 kafka 的日志消息将错误日志上报到 sentry;
 ![server告警流程.png](server告警流程.png);
 
 优点:侵入小,无改动,只需监听消息便可以把所以错误消息导入;
-缺点:错误异常栈,影响用户,代码版本,breadcrumb等信息皆无, 只有通过上报的一条消息; 另外每一个消息的fingerprint要自己提取设置, 不
+缺点:错误异常栈,影响用户,代码版本,breadcrumb 等信息皆无, 只有通过上报的一条消息; 另外每一个消息的 fingerprint 要自己提取设置, 不
 
 参考资料:
 [Multiple Instances & Capturing Messages](https://docs.sentry.io/clients/node/usage/?platform=javascript)
 
-
 #### 部署
-sentry sass服务注册帐号是直接可以使用的,但他的服务器是American,我们可以单独进行[部署](https://docs.sentry.io/server/installation/?platform=javascript)
+
+sentry sass 服务注册帐号是直接可以使用的,但他的服务器是 American,我们可以单独进行[部署](https://docs.sentry.io/server/installation/?platform=javascript)
 ![sentry-docker](sentry-docker.png);
 文档 说的很详细不再赘述!
 
-在部署的时间有一个有意思的事情 , sentry服务内部 的报错会上报给自己,这样当我们查一些问题通过上报的错误信息就知道发生了什么. 很棒,好的工具给人惊喜!
+在部署的时间有一个有意思的事情 , sentry 服务内部 的报错会上报给自己,这样当我们查一些问题通过上报的错误信息就知道发生了什么. 很棒,好的工具给人惊喜!
 
 ![sentry内部报错.png](sentry内部报错.png);
 
-
-问一句,如果拿开源代码这个在墙内部署,供其他人使用,是否有问题?  
+问一句,如果拿开源代码这个在墙内部署,供其他人使用,是否有问题?
 
 ## 总结
 
