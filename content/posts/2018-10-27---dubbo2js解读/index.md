@@ -1,54 +1,159 @@
 ---
-title: 灰度方案如何拉低我的焦虑值
-subTitle: 用技术拯救自己
+title: dubbo2js解读
+subTitle: dubbo2js是什么
 cover: 焦虑.png
 category: "tools"
 ---
 
-**"潮退时就知道谁在裸泳"**
+dubbo2js 逐渐落地, 在使用过程中遇到跟踪一些问题,会有些害怕,不知道如何处理,本文来讲解 dubbo 项目相关的概念及源代码解读
 
-如果给你 100W/M 的工资,你能写出无 bug 的代码吗?
+## question
 
-我相信有这样的大神存在,但在一个项目要靠大神才能保障安全,也是可笑至极,最后的结果极可能是大神要烦死,小神们没空间成长,**参天大树之下只有杂草丛生**;
+让我们先从问题入手,看这些问题,你是否也似曾相识;
 
-正常项目都会遇到人员的流失,新人的培养,在能力锻炼的过程中,总会出一些线上问题,当问题出现时该如何处理?
+> dubbo2js 是什么?
+> zookeeper 扮演了什么角色?
+> dubbo 负载是如何做的?
+> dubbo 服务优雅登机如何做到?
+> node 与 dubbo 不是一个技术体系, 如何通信的?
 
-风险的规避隔离应该是每一个人的选择,灰度是我的其中一个极有效选择;借助灰度可以打造一个**良性循环**的团队升级机制;
+### Q1: dubbo2js 是什么?
 
-### 灰度解决的痛点
+dubbo2js 是连接 node 与 dubbo 的一个桥梁. 也可以看做 dubbo 服务的 node 版 sdk;
 
-在我的实践中,灰度会解决下列问题:
+其本身依赖了 hession.js ,js-to-java zookeeperClient;
 
-1. 次生灾害:一人生病,所有人受治疗的方案,可能  使正常用户受连带影响,甚至导致次生灾害的发生;
-2. 版本困境:版本升与不升都有用户受影响,升新版本就会影响 A 用户,不升版本 B 用户;
-3. 版本魔咒:每个版本总会有些问题的魔咒,上线会紧张,节假日前更慌的要命;
-4. bug 复现难:某个问题在本地无法复现;
-5. A/B 测试:一部分用户先尝试某功能,获取用户报告;
+[hession.js](https://github.com/node-modules/hessian.js/)
 
-上面列的问题会复合发生,我曾经历一个问题(2 与 4 的复合体),真的打打飞的去现场改 bug; 升版本会影响 KA 用户,不升版本又不能赶上功能上线时间;但本地使用各种方法都不能复现,最后  迫不得已,打飞的去客户现场才解决了问题 ;
+用来解码与编码 hession 协议的字节流;以下两个代码片段也可以看出其作用
 
-![WechatIMG1.jpeg](WechatIMG1.png)
+Encoder
 
-###灰度 是什么
-百科上解释
+```javascript
+// java code:
+// Map<Long, Integer> map = new HashMap<Long, Integer>();
+// map.put(123L, 123456);
+// map.put(123456L, 123);
 
-灰度 是指在黑与白之间，能够平滑过渡的一种发布方式。在其上可以进行 A/B testing，即让一部分用户继续用产品特性 A，一部分用户开始用产品特性 B，如果用户对 B 没有什么反对意见，那么逐步扩大范围，把所有用户都迁移到 B 上面来。灰度发布可以保证整体系统的稳定，在初始灰度的时候就可以发现、调整问题，以保证其影响度。
-灰度期：灰度发布开始到结束期间的这一段时间，称为灰度期。
+var hessian = require('hessian.js');
+var encoder = new hessian.Encoder();
 
-在上线流程上添加一个环节 "灰度上线",就能解决上面列出的 5 类问题;
+// using es6 Map
+var map = new Map();
+map.set({ '$class': 'java.lang.Long', '$': 123 }, 123456);
+map.set({ '$class': 'java.lang.Long', '$': 123456 }, 123);
 
-问题突发时: 尤其在问题并不明朗的情况下,可以把受影响用户切到灰度,单独为其部署 fix 版本;控制了影响范围,上线心理压力自然小些;
+encoder.write(map); // or encoder.write({ '$class': 'java.util.HashMap', '$': map })
+```
 
-新版本上线:可以拉一些用户进行体验,借助数据分析, 错误追踪,售后等措施,获取用户反馈,在震荡期过后,可以平移到线上;
+Decode
 
-A/B 测试:新特性上线,邀请用户体验新功能;
+```javascript
+var hessian = require("hessian.js");
+var decoder = new hessian.Decoder(buf);
 
-### 灰度实现
+decoder.read(); //return what it is
+decoder.readNull();
+decoder.readBool();
+decoder.readInt();
+decoder.readLong();
+decoder.readDouble();
+decoder.readDate();
+decoder.readObect();
+decoder.readMap();
+decoder.readArray();
+decoder.readList();
+decoder.readRef();
+```
 
-这里不做过多说明,如果对方案有兴趣可以留言;
+[js-to-java](https://github.com/node-modules/js-to-java)
 
-### 总结
+"easy way to wrap js object to java object"
 
-灰度方案 也不是银弹, 只是辅助工具;
+```javascript
+var java = require('js-to-java');
 
-配合错误  跟踪,数据统计等工具,能达到最好的  "治疗"效果;
+// Java: com.java.Object o = new com.java.Object();
+java('com.java.Object', { foo: 'bar' });
+// => {$class: 'com.java.Object', $: { foo: 'bar' }}
+
+// Java: Boolean r;
+java.Boolean(true);
+// => {$class: 'java.lang.Boolean', $: true}
+
+// Java: short[] shorts = new short[] {1, 2, 3};
+java.array('short', [1, 2, 3]);
+// => {$class: '[short', $: [1, 2, 3]}
+
+// Java: int[] ints = new int[] {1, 2, 3};
+java.array('int', [1, 2, 3]);
+// same to the next example
+java.array.int([1, 2, 3]);
+// => {$class: '[int', $: [1, 2, 3]}
+```
+
+zookeeper
+
+用来做服务发现,负载均衡相关的参数也在这里实现;关于 zookeeper 的详细讲解会在下一个问题详细说明
+
+### Q2: zookeeper 扮演了什么角色?
+
+zookeeper 源于大数据框架 Hadoop,可以用来分布式配置服务,同步服务.其本质是一个目录服务服务,
+
+在 java 体系中使用 zookeeper 来解耦 Provider 与 consumer;
+Provider 把接口信息写入 zookeeper, zookeeper 会通知相关的 consumer 同步信息;
+借肋于 zookeeper 特性, dubbo 负载,及服务优雅停机都可以做到了;
+
+### Q3: dubbo 负载是如何做的?
+
+查看@2
+
+### Q4: dubbo 服务优雅登机如何做到?
+
+查看@2
+还不明白请留言.
+
+## dubbo2js 相关词汇
+
+- hession 协议
+  - hession.js
+  - js-to-java
+  - 翻译师
+- 序列化
+- Provider
+- Zookeeper
+
+#### dubbo 报文格式
+
+![](WX20181127-100520.png)
+
+![](WX20181127-100546.png)
+
+![](WX20181127-100556.png)
+
+#### [翻译师](https://github.com/dubbo/dubbo2.js/tree/master/packages/interpret-cli)
+
+![](WX20181127-100646.png)
+
+## dubbo2js 解读
+
+###  词汇
+
+- SokcetWorker:与 dubbo 服务所在主机的一个
+- socket 连接
+- Context:一次 dubbo 服务调用的上下文,与 koa context 概念一致
+- RequestId:为发出的请求做一个编号
+- DubboAgent:dubbo 服务管理
+- Scheduler:调度器
+- Dubbo 实例
+- Quene:请求队列
+- Middleware:中间件
+
+### dubbo2js 发送信息时序图
+
+![](WX20181127-100611.png)
+
+###常见问题
+
+## 相关信息
+ppt

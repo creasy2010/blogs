@@ -10,7 +10,7 @@
     "clean": "ts-node ./bin/clean.ts",
     "mv": "npm run clean && cd public && mv -f * /Users/dong/workbench/qmfe/creasy2010.github.io",
     "develop-host": "gatsby develop --host 192.168.0.112",
-    "build": "gatsby build",
+    "build": "gatsby build && npm run mv",
     "serve": "gatsby serve",
     "format-output": "prettier src/**/*.{js,jsx}",
     "format": "prettier --write src/**/*.{js,jsx}",
