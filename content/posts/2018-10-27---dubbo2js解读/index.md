@@ -1,7 +1,7 @@
 ---
 title: dubbo2js解读
 subTitle: dubbo2js是什么
-cover: 焦虑.png
+cover: 11751992.png
 category: "tools"
 ---
 

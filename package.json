@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "gatsby develop",
-    "clean": "ts-node ./bin/clean.ts",
-    "mv": "npm run clean && cd public && mv -f * /Users/dong/workbench/qmfe/creasy2010.github.io",
+    "clean": "ts-node ./bin/auto.ts",
+    "mv": "npm run clean && cd public && mv -f /Users/dong/dong/blogs/public/* /Users/dong/workbench/qmfe/creasy2010.github.io",
     "develop-host": "gatsby develop --host 192.168.0.112",
     "build": "gatsby build && npm run mv",
     "serve": "gatsby serve",
