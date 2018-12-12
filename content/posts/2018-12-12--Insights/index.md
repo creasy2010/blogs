@@ -1,6 +1,6 @@
 ---
-title: 灰度方案如何拉低我的焦虑值
-subTitle: 用技术拯救自己
+title: Insights
+subTitle: 打心底喜欢的那些语句
 cover: icon.png
 category: "tools"
 ---
