@@ -6,11 +6,11 @@
   "version": "1.1.1",
   "license": "MIT",
   "scripts": {
+    "auto": "gatsby build && npm run mv && ./bin/commit.py",
     "dev": "gatsby develop",
     "clean": "ts-node ./bin/auto.ts",
     "mv": "npm run clean && cd public && mv -f /Users/dong/dong/blogs/public/* /Users/dong/workbench/qmfe/creasy2010.github.io",
     "develop-host": "gatsby develop --host 192.168.0.112",
-    "auto": "gatsby build && npm run mv && ./bin/commit.py",
     "serve": "gatsby serve",
     "format-output": "prettier src/**/*.{js,jsx}",
     "format": "prettier --write src/**/*.{js,jsx}",

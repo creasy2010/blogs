@@ -1,6 +1,6 @@
 ---
 title: About Me
 menuTitle: About
---- 
+---
 
-![微信](wechat-personal.jpg)
+![微信](/img/wechat-personal.jpg)
