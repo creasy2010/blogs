@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "auto": "gatsby build && npm run mv && ./bin/commit.py",
+    "build":"gatsby build",
     "dev": "gatsby develop",
     "clean": "ts-node ./bin/auto.ts",
     "mv": "npm run clean && cd public && mv -f /Users/dong/dong/blogs/public/* /Users/dong/workbench/qmfe/creasy2010.github.io",
