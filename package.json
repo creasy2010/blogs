@@ -6,7 +6,7 @@
   "version": "1.1.1",
   "license": "MIT",
   "scripts": {
-    "auto": "gatsby build && npm run mv && ./bin/commit.py",
+    "auto": "npm run mv && ./bin/commit.py",
     "build":"gatsby build",
     "dev": "gatsby develop",
     "clean": "ts-node ./bin/auto.ts",

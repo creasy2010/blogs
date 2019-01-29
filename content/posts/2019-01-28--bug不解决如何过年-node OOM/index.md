@@ -1,6 +1,6 @@
 ---
 title: bug不解决,如何过年-node OOM
-subTitle: 5块钱的bug,怎么变成了用1.5W的成本 !
+subTitle: 5块钱的bug，怎么用了1.5W的成本
 cover: boom_1308-2927.jpg
 category: "tools"
 ---

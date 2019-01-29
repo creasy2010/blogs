@@ -9,11 +9,12 @@ class PostComments extends React.Component{
 
     if(window.Gitment){
       const gitment = new window.Gitment({
+        id:decodeURIComponent(window.location.pathname),
         owner: 'creasy2010',
-        repo: 'creasy2010.github.io',
+        repo: 'https://github.com/creasy2010/idea.git',
         oauth: {
-          client_id: '1816b072b2ee81711445',
-          client_secret: '4e5dc1d0b197493c0871c14f35860f7c9d6cd317',
+          client_id: 'c99db52faa5162491dbc',
+          client_secret: '64608aa3f4dd9bb9a553d4c9568d710caebbe910',
         },
       });
       gitment.render('post-comments');
