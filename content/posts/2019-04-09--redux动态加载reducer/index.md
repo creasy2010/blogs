@@ -1,6 +1,6 @@
 ---
 title: redux动态加载reducer
-subTitle: taro 小程序 分包之redux动态加载reducer
+subTitle: taro小程序分包之redux动态加载reducer
 cover: redux.png
 category: "tools"
 ---
