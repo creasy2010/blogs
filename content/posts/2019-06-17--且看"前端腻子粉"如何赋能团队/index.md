@@ -1,5 +1,5 @@
 ---
-title: "前端腻子粉" - 最近我在搞装修 
+title: 前端腻子粉 - 最近我在搞装修 
 subTitle: 且看"前端腻子粉"如何赋能团队
 cover: images.jpeg
 category: "tools"
@@ -13,7 +13,7 @@ category: "tools"
 ## 是什么
 
 在解释我们的腻子粉能带来什么前, 我们先回味下前端不那么幸福的事情?
-!(作为前端你幸福吗?)[./xingfu.png];
+![作为前端你幸福吗?](./xingfu.png);
 
 ### 前端的烦恼
 
@@ -44,12 +44,17 @@ category: "tools"
 5. 在页面使用到对象的地方,总是有引用;
 6. 当然,这一切是自动生成的,非人力可为;
 
-!()[./swagger-api.png]
-!()[./ts1.png]
-!()[./ts2.png]
-!()[./ts3.png]
-!()[./ts4.png]
-!()[./ts5.png]
+![](./swagger-api.png)
+
+![](./ts1.png)
+
+![](./ts2.png)
+
+![](./ts3.png)
+
+![](./ts4.png)
+
+![](./ts5.png)
 
 再来看下当命令运行时生成的代码(参考下图):
 
@@ -57,7 +62,7 @@ category: "tools"
 2. 右上是 对应接口的 mock 数据
 3. 右下是 res/response 对应的 ts 提示;
 
-!()[./api-example.png]
+![](./api-example.png)
 
 ### 项目如何落地
 
@@ -66,7 +71,7 @@ category: "tools"
 
 > 后台 bff 规范输出接口,如对接 swagger yapi 等 api 管理工具;
 
-!()[./swagger-api.png];
+![](./swagger-api.png);
 
 生成代码示例:
 
@@ -109,13 +114,14 @@ ps:
 
 > talk is cheap ,show me the code;
 
-(适配代码)[https://github.com/creasy2010/moon/tree/master/packages/moon-wanmi]
+[适配代码](https://github.com/creasy2010/moon/tree/master/packages/moon-wanmi)
 从 swagger 下载 api 描述 JSONSCHEMA ,分组,组装数据;
 
-(转换逻辑)[https://github.com/creasy2010/moon/tree/master/packages/core/src/web-api/client]
+[转换逻辑](https://github.com/creasy2010/moon/tree/master/packages/core/src/web-api/client)
 生成调用代码,生成 req/res ts 定义 生成 mock 数据;
 
-(项目主页)[https://github.com/creasy2010/moon]
+[项目主页](https://github.com/creasy2010/moon)
+欢迎pr,众人拾柴火焰高!
 
 ## FAP:
 
@@ -135,4 +141,4 @@ ps:
 4. api 工具 不单单 sawgger - 如 yapi 等工具也需要;
 5. BaseResponse 处理 - 后端接口喜欢包装一层 baseresponse, 那么我们并不希望它出现在每个地方,我们会在 ts 定义中剥除 BaseResponse,调用的位置只用关心自己的数据;
 
-!()[./whyswaggergen.png];
+![](./whyswaggergen.png);
