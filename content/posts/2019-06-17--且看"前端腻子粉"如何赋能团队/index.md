@@ -123,6 +123,10 @@ ps:
 [项目主页](https://github.com/creasy2010/moon)
 欢迎pr,众人拾柴火焰高!
 
+交流请加入群
+![](./WechatGrou.png);
+
+
 ## FAP:
 
 ### 什么是异步编程?
